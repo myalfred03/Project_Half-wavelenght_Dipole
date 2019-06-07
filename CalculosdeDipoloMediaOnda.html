@@ -1,0 +1,440 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>CalculosdeDipoloMediaOnda</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-05-28"><meta name="DC.source" content="CalculosdeDipoloMediaOnda.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+
+  </style></head><body><div class="content"><pre class="codeinput">                                                                        <span class="comment">%Calculos</span>
+                                                                <span class="comment">%Half waveleght dipole</span>
+                                                             <span class="comment">%Antenna and radio propagation</span>
+                                                         <span class="comment">%Profesor: Ing. Oscar Napoleon Martinez</span>
+                                                                     <span class="comment">%Elaborado Por:</span>
+                                                    <span class="comment">%  *Yeser Alfredo Morales *Jarib Castillo *Efrain Ibarra</span>
+<span class="comment">%               ------------------------------------------------------------------------------------------------------------------------            %</span>
+clc; clear <span class="string">all</span>;
+</pre><pre class="codeinput"><span class="comment">%                                                               Datos Pedidos al Usuario</span>
+
+display(<span class="string">'Por favor digite los siguientes datos'</span>)
+PT=input(<span class="string">'Potencia de entrada en el Generador  (W)'</span>);                         <span class="comment">%Potencia de entrada en la antena dipolo</span>
+r=input(<span class="string">'radio (m)'</span>);                                                         <span class="comment">%Radio o distancia a medir el campo electrico y Magnetico</span>
+f1=input(<span class="string">'Ingrese frecuencia en MHz   '</span>);           f=f1*1e6;                 <span class="comment">%Frecuencia a la que opera el dipolo</span>
+lx=input(<span class="string">'Numeros de lambda en eje X "a*lambda" '</span>);                           <span class="comment">%Dimension de apertura rectangular en eje X</span>
+ly=input(<span class="string">'Numeros de lanmda en eje Y "b*lambda" '</span>);                           <span class="comment">%Dimension de apertura rectangular en eje Y</span>
+r1=input(<span class="string">'Ingrese el radio exterior  en mm  '</span>);     R1=r1*1e-3                 <span class="comment">%Radio mayor del tubo.</span>
+r2=input(<span class="string">'Ingrese el radio interior  en mm  '</span>);     R2=r2*1e-3                 <span class="comment">%Radio menor del tubo.</span>
+<span class="comment">%for m=87.5e6:200e3:108e6;</span>
+<span class="comment">%   f=m;</span>
+m=0;
+</pre><pre class="codeoutput">Por favor digite los siguientes datos
+</pre><pre class="codeoutput">Error using input
+Cannot call INPUT from EVALC.
+
+Error in CalculosdeDipoloMediaOnda (line 14)
+PT=input('Potencia de entrada en el Generador  (W)');                         %Potencia de entrada en la antena dipolo
+</pre><pre>             _________________________________________________________________________________________________________________________           %
+                                          Calculos de variables que caracterizan la Dipolo Media Onda</pre><pre class="codeinput">Rrad=73;                                                                      <span class="comment">%Resistencia de radiacion del dipolo en ohms.</span>
+n=120*pi;                                                                     <span class="comment">%Impedancia intrinseca del espacio libre.</span>
+UAl=(pi*4e-7) ;                                                               <span class="comment">%Permeabilidad del Aluminio</span>
+CondAl=(3.5e7);                                                               <span class="comment">%Conductividad del Aluminio</span>
+c=3e8;                                                                        <span class="comment">%Velocidad de la Luz.</span>
+At=pi*(R1^2-R2^2)                                                             <span class="comment">%Area transversal del tubo.</span>
+lambda = c/f;                                                                 <span class="comment">%Longitud de onda.</span>
+k =(2*pi)/lambda;                                                             <span class="comment">%Numero de ondas.</span>
+L=lambda./2;                                                                  <span class="comment">%Longitud de dipolo.</span>
+Rloss= ((L/(2*pi*At))*sqrt((pi*f*UAl)/CondAl))                                <span class="comment">%Resistencia de perdida.</span>
+Ecd=Rrad/(Rloss+Rrad)                                                         <span class="comment">%Eficiencia de conduccion del dielectrico.</span>
+Prad=Ecd*PT                                                                   <span class="comment">%Potencia Total Radiada.</span>
+Io=sqrt(2*Prad/Rrad)                                                          <span class="comment">%Corriente.</span>
+theta=2/3*pi;                                                                 <span class="comment">%Valor de Theta en grados para mostrar valores puntuales.</span>
+E=60*1j*Io*exp(-1j*k*r)*(1/r)*(cos((pi/2)*cos(theta))./sin(theta))            <span class="comment">%Ecuacion del campo el&eacute;ctrico en valor puntual a Theta.</span>
+H=(1/(2*pi))*1j*Io*exp(-1j*k*r)*(1/r)*(cos((pi/2)*cos(theta))./sin(theta))    <span class="comment">%Ecuacion del campo magn&eacute;tico en valor puntual a Theta.</span>
+Wav=(15*Io^2)/(pi*r^2)*((cos((pi/2)*cos(theta))./sin(theta))).^2              <span class="comment">%Densidad de potencia radiada o vector de poynting promedio en valor puntual a Theta.</span>
+Wo=(15*Io.^2)/(pi*r.^2)                                                       <span class="comment">%Densidad de potencia radiada maxima</span>
+U=(15*Io.^2)/pi*((cos((pi/2)*cos(theta))./sin(theta))).^2                     <span class="comment">%Intensidad de radiaci&oacute;n en valor puntual a Theta</span>
+Umax=(15*Io.^2)/pi                                                            <span class="comment">%Intensidad m&aacute;xima de radiaci&oacute;n en valor puntual a Theta.</span>
+FR=Wav/Wo                                                                     <span class="comment">%Intensidad de radiacion normalizada en valor puntual a Theta.</span>
+D=4*pi*U/Prad                                                                 <span class="comment">%Directividad</span>
+DdB=10*log10(D)                                                               <span class="comment">%Directividad en decibelios.</span>
+Do=4*pi*Umax/Prad                                                             <span class="comment">%Directividad M&aacute;xima.</span>
+DodB=10*log10(Do)                                                             <span class="comment">%Directividad M&aacute;xima en decibelios.</span>
+HPBW=(1-sqrt(1-4*27e-4*101/Do))/54e-4                                         <span class="comment">%Half power beamwidth.</span>
+G=Ecd*D                                                                       <span class="comment">%Ganancia.</span>
+GdB=10*log10(G)                                                               <span class="comment">%Ganancia en decibelios.</span>
+Go=Ecd*Do                                                                     <span class="comment">%Ganancia M&aacute;xima.</span>
+GodB=10*log10(Go)                                                             <span class="comment">%Ganancia M&aacute;xima en decibelios.</span>
+ohmA=4*pi/Do                                                                  <span class="comment">%Angulo s&oacute;lido del haz.</span>
+Ae=(lambda^2)/4*pi*G                                                          <span class="comment">%Area efectiva.</span>
+Aem=(lambda^2)/4*pi*Go                                                        <span class="comment">%Area M&aacute;xima efectiva.</span>
+</pre><pre class="codeinput"><span class="comment">%                     Graficas - Campo Electrico - Campo Magnetico - Intensidad de radiacion - Vector de poynting - Directividad -</span>
+<span class="comment">%                                                          Todas Expresadas en forma Polar</span>
+
+    theta=linspace(0,1*pi);                    <span class="comment">%Valor de Theta y Phi para mostrar Graficas de las variables en sus grados</span>
+    fi=linspace(0,2*pi);      <span class="comment">%                                    Correspondientes a estas.</span>
+
+
+    E1=60*1j*Io*exp(-1j*k*r)*(1/r)*(cos((pi/2)*cos(theta))./sin(theta))      <span class="comment">%Ecuacion del campo el&eacute;ctrico utilizada para Graficar.</span>
+    figure(m+1);
+    subplot(2,3,1)
+    polar(theta,abs(E1))
+    view(-270,-90)
+    title(<span class="string">'Campo Electrico'</span>)
+    H1=(1/(2*pi))*1j*Io*exp(-1j*k*r)*(1/r)*(cos((pi/2)*cos(theta))./sin(theta));<span class="comment">%Ecuacion del campo magn&eacute;tico utilizada para Graficar.</span>
+    subplot(2,3,2)
+    polar(theta,abs(H1),<span class="string">'r'</span>)
+    view(-270,-90)
+    title(<span class="string">'Campo Magnetico'</span>)
+    subplot(2,3,3)
+    Wav1=(15*Io^2)/(pi*r^2)*((cos((pi/2)*cos(theta))./sin(theta))).^2 ;         <span class="comment">%Densidad de potencia radiada o vector de poynting promedio utilizada para Graficar.</span>
+    Wo1=(15*Io.^2)/(pi*r.^2) ;                                                  <span class="comment">%Densidad de potencia radiada maxima.</span>
+    FR1=Wav1/Wo1 ;                                                              <span class="comment">%Intensidad de radiacion normalizada utilizada para Graficar.</span>
+    polar(theta,abs(FR1),<span class="string">'y'</span>)
+    view(-270,-90)
+    title(<span class="string">'Intensidad de radiacion'</span>)
+    subplot(2,3,4)
+    polar(theta, abs(Wav1),<span class="string">'c'</span>)
+    view(-270,-90)
+    title(<span class="string">'Vector de poynting'</span>)
+    subplot(2,3,5)
+    U1=(15*Io.^2)/pi*((cos((pi/2)*cos(theta))./sin(theta))).^2;                  <span class="comment">%Intensidad de radiaci&oacute;n utilizada para Graficar.</span>
+    D1=4*pi*abs(U1)/Prad ;                                                       <span class="comment">%Directividad utilizada para Graficar.</span>
+    polar(theta, D1,<span class="string">'g'</span>)
+    view(-270,-90)
+    title(<span class="string">'Directividad'</span>)
+</pre><pre>                                                  Graficas - Campo Electrico - Campo Magnetico
+                                                        Expresadas en forma Rectangular</pre><pre class="codeinput">    figure(m+2);
+    subplot(2,2,1:2)
+    plot(theta,abs(E1),<span class="string">'b'</span>)
+    grid;
+    title(<span class="string">'Campo Electrico'</span>)
+    xlabel(<span class="string">'0:2*pi'</span>)
+    ylabel(<span class="string">'Campo Electrico V/M'</span>)
+    subplot(2,2,3:4)
+    plot(theta,abs(H1),<span class="string">'r'</span>)
+    grid;
+    title(<span class="string">'Campo Magnetico'</span>)
+    xlabel(<span class="string">'0:2*pi'</span>)
+    ylabel(<span class="string">'Campo Magnetico A/M'</span>)
+</pre><pre>                                                     Grafica 3D Patron de radiacion</pre><pre class="codeinput">    [FI,THETA]=meshgrid(fi,theta);
+
+    <span class="comment">%                                                        creacion del Patron de Radiacion.</span>
+
+    <span class="comment">%U2=(15*Io.^2)/pi*((cos((pi/2)*cos(THETA))./sin(THETA))).^2;                     %Intensidad de radiaci&oacute;n utilizada para Graficar.</span>
+    E2=abs(60*1j*Io*exp(-1j*k*r)*(1/r)*(cos((pi/2)*cos(THETA))./sin(THETA)))
+
+    <span class="comment">%                   cambio de coordenadas esfericas a rectangulares que son las que se usan para graficas en %3D en matlab.</span>
+
+    X=abs(E2).*sin(THETA).*cos(FI);
+    Y=abs(E2).*sin(THETA).*sin(FI);
+    Z=abs(E2).*cos(THETA);
+    figure(m+3);
+    R=surface(X,Y,Z,E2);
+    meshc(X,Y,Z,E2);
+    grid;
+    axis <span class="string">equal</span>
+    lighting <span class="string">gouraud</span>
+    shading <span class="string">interp</span>
+    view(0,40)
+    title(<span class="string">'Intensidad de radiacion'</span>)
+</pre><pre class="codeinput">                                                             <span class="comment">%Vistas del Patron de Radiacion</span>
+phi=linspace(0,2*pi);
+tetha=linspace(0,pi);
+[t,p]=meshgrid(tetha,phi);
+E3=abs(60*1j*Io*exp(-1j*k*r)*(1/r)*(cos((pi/2)*cos(t))./sin(t)));
+<span class="comment">%e=abs((60*1j*Io)*exp(-1j*k*r)*(1/r).*(cos((pi/2).*cos(t))./sin(t)));</span>
+<span class="comment">%U3=abs((15*Io.^2)/pi*((cos((pi/2)*cos(t))./sin(t))).^2);</span>
+x=E3.*sin(t).*cos(p);
+y=E3.*sin(t).*sin(p);
+z=E3.*cos(t);
+figure(m+4)
+polar(p,E3)                                                                 <span class="comment">%   Patr&oacute;n de Radiaci&oacute;n en proporcion a la Direcci&oacute;n del campo</span>
+title(<span class="string">'Patr&oacute;n de Radiaci&oacute;n en proporci&oacute;n a la Direcci&oacute;n del campo'</span>)
+figure(m+5)
+plot(x,y)                                                                   <span class="comment">%   Patr&oacute;n de radiaci&oacute;n en los planos X,Y</span>
+title(<span class="string">'Patr&oacute;n de radiaci&oacute;n en los planos X,Y'</span>)
+figure(m+6)
+plot(y,z)                                                                   <span class="comment">%   Patr&oacute;n de radiaci&oacute;n en los planos Y,Z</span>
+title(<span class="string">'Patr&oacute;n de radiaci&oacute;n en los planos Y,Z'</span>)
+</pre><pre>                                                      Apertura Rectangular Referencia Ulaby</pre><pre class="codeinput">    y=lx*sin(theta);
+    f=(sinc(pi*y)).^2;
+    <span class="comment">%subplot(2,3,4)</span>
+    figure(m+7);
+    plot(y,f)
+    <span class="comment">%polar(y,f)</span>
+    xlim([-5,5]);
+    ylim([-0.002,1.1]);
+    grid;
+    xlabel(<span class="string">'longitud de onda en la apertura rectangular X'</span>);
+    ylabel(<span class="string">'Patron de radiacion S(R,theta)/Smax'</span>);
+    title(<span class="string">'Patron de apertura rectangular Ulaby'</span>);
+</pre><pre>                                                  Apertura Rectangular 3D Referencia PDF Orfanidis</pre><pre class="codeinput">    [theta,phi] = meshgrid(0:1:90, 0:9:360);
+    theta = theta*pi/180; phi = phi*pi/180;
+    vx = lx*sin(theta).*cos(phi);
+    vy = ly*sin(theta).*sin(phi);
+    Fo= abs((1 + cos(theta))/2 .* sinc(vx) .* sinc(vy));
+    <span class="comment">%subplot(2,3,5)</span>
+    figure(m+8);
+    surface(vx,vy,Fo);
+    <span class="comment">%meshc(vx,vy,Fo);</span>
+    axis <span class="string">equal</span>
+    grid;
+    xlabel(<span class="string">'longitud de onda en la apertura rectangular X'</span>);
+    ylabel(<span class="string">'longitud de onda en la apertura rectangular Y'</span>);
+    zlabel(<span class="string">'Patron de radiacion E(theta,phi)/Emax'</span>);
+    title(<span class="string">'Pattern of rectangular aperture'</span>);
+    colormap <span class="string">jet</span>
+    shading <span class="string">flat</span>
+    <span class="comment">%end</span>
+    <span class="comment">%surf(X,Y,Z)</span>
+    <span class="comment">%title('grafica mesh'),xlabel('eje x'),ylabel('eje y'),zlabel('eje z')</span>
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.14<br></p></div><!--
+##### SOURCE BEGIN #####
+                                                                        %Calculos
+                                                                %Half waveleght dipole
+                                                             %Antenna and radio propagation
+                                                         %Profesor: Ing. Oscar Napoleon Martinez
+                                                                     %Elaborado Por:
+                                                    %  *Yeser Alfredo Morales *Jarib Castillo *Efrain Ibarra
+%               REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH            %
+clc; clear all;
+%%
+
+%                                                               Datos Pedidos al Usuario
+
+display('Por favor digite los siguientes datos')
+PT=input('Potencia de entrada en el Generador  (W)');                         %Potencia de entrada en la antena dipolo
+r=input('radio (m)');                                                         %Radio o distancia a medir el campo electrico y Magnetico
+f1=input('Ingrese frecuencia en MHz   ');           f=f1*1e6;                 %Frecuencia a la que opera el dipolo
+lx=input('Numeros de lambda en eje X "a*lambda" ');                           %Dimension de apertura rectangular en eje X
+ly=input('Numeros de lanmda en eje Y "b*lambda" ');                           %Dimension de apertura rectangular en eje Y
+r1=input('Ingrese el radio exterior  en mm  ');     R1=r1*1e-3                 %Radio mayor del tubo.
+r2=input('Ingrese el radio interior  en mm  ');     R2=r2*1e-3                 %Radio menor del tubo.
+%for m=87.5e6:200e3:108e6;
+%   f=m;
+m=0;
+%%
+%               _________________________________________________________________________________________________________________________           %
+ %                                            Calculos de variables que caracterizan la Dipolo Media Onda
+
+Rrad=73;                                                                      %Resistencia de radiacion del dipolo en ohms.
+n=120*pi;                                                                     %Impedancia intrinseca del espacio libre.
+UAl=(pi*4e-7) ;                                                               %Permeabilidad del Aluminio
+CondAl=(3.5e7);                                                               %Conductividad del Aluminio
+c=3e8;                                                                        %Velocidad de la Luz.
+At=pi*(R1^2-R2^2)                                                             %Area transversal del tubo.
+lambda = c/f;                                                                 %Longitud de onda.
+k =(2*pi)/lambda;                                                             %Numero de ondas.
+L=lambda./2;                                                                  %Longitud de dipolo.
+Rloss= ((L/(2*pi*At))*sqrt((pi*f*UAl)/CondAl))                                %Resistencia de perdida.
+Ecd=Rrad/(Rloss+Rrad)                                                         %Eficiencia de conduccion del dielectrico.
+Prad=Ecd*PT                                                                   %Potencia Total Radiada.
+Io=sqrt(2*Prad/Rrad)                                                          %Corriente.
+theta=2/3*pi;                                                                 %Valor de Theta en grados para mostrar valores puntuales.
+E=60*1j*Io*exp(-1j*k*r)*(1/r)*(cos((pi/2)*cos(theta))./sin(theta))            %Ecuacion del campo eléctrico en valor puntual a Theta.
+H=(1/(2*pi))*1j*Io*exp(-1j*k*r)*(1/r)*(cos((pi/2)*cos(theta))./sin(theta))    %Ecuacion del campo magnético en valor puntual a Theta.
+Wav=(15*Io^2)/(pi*r^2)*((cos((pi/2)*cos(theta))./sin(theta))).^2              %Densidad de potencia radiada o vector de poynting promedio en valor puntual a Theta.
+Wo=(15*Io.^2)/(pi*r.^2)                                                       %Densidad de potencia radiada maxima
+U=(15*Io.^2)/pi*((cos((pi/2)*cos(theta))./sin(theta))).^2                     %Intensidad de radiación en valor puntual a Theta
+Umax=(15*Io.^2)/pi                                                            %Intensidad máxima de radiación en valor puntual a Theta.
+FR=Wav/Wo                                                                     %Intensidad de radiacion normalizada en valor puntual a Theta.
+D=4*pi*U/Prad                                                                 %Directividad
+DdB=10*log10(D)                                                               %Directividad en decibelios.
+Do=4*pi*Umax/Prad                                                             %Directividad Máxima.
+DodB=10*log10(Do)                                                             %Directividad Máxima en decibelios.
+HPBW=(1-sqrt(1-4*27e-4*101/Do))/54e-4                                         %Half power beamwidth.
+G=Ecd*D                                                                       %Ganancia.
+GdB=10*log10(G)                                                               %Ganancia en decibelios.
+Go=Ecd*Do                                                                     %Ganancia Máxima.
+GodB=10*log10(Go)                                                             %Ganancia Máxima en decibelios.
+ohmA=4*pi/Do                                                                  %Angulo sólido del haz.
+Ae=(lambda^2)/4*pi*G                                                          %Area efectiva.
+Aem=(lambda^2)/4*pi*Go                                                        %Area Máxima efectiva.
+%%
+
+%                     Graficas - Campo Electrico - Campo Magnetico - Intensidad de radiacion - Vector de poynting - Directividad -                      
+%                                                          Todas Expresadas en forma Polar
+
+    theta=linspace(0,1*pi);                    %Valor de Theta y Phi para mostrar Graficas de las variables en sus grados 
+    fi=linspace(0,2*pi);      %                                    Correspondientes a estas.
+    
+                                                                             
+    E1=60*1j*Io*exp(-1j*k*r)*(1/r)*(cos((pi/2)*cos(theta))./sin(theta))      %Ecuacion del campo eléctrico utilizada para Graficar.
+    figure(m+1);
+    subplot(2,3,1)
+    polar(theta,abs(E1))
+    view(-270,-90)
+    title('Campo Electrico')
+    H1=(1/(2*pi))*1j*Io*exp(-1j*k*r)*(1/r)*(cos((pi/2)*cos(theta))./sin(theta));%Ecuacion del campo magnético utilizada para Graficar.
+    subplot(2,3,2)
+    polar(theta,abs(H1),'r')
+    view(-270,-90)
+    title('Campo Magnetico')
+    subplot(2,3,3)
+    Wav1=(15*Io^2)/(pi*r^2)*((cos((pi/2)*cos(theta))./sin(theta))).^2 ;         %Densidad de potencia radiada o vector de poynting promedio utilizada para Graficar.
+    Wo1=(15*Io.^2)/(pi*r.^2) ;                                                  %Densidad de potencia radiada maxima.
+    FR1=Wav1/Wo1 ;                                                              %Intensidad de radiacion normalizada utilizada para Graficar.
+    polar(theta,abs(FR1),'y')
+    view(-270,-90)
+    title('Intensidad de radiacion')
+    subplot(2,3,4)
+    polar(theta, abs(Wav1),'c')
+    view(-270,-90)
+    title('Vector de poynting')
+    subplot(2,3,5)
+    U1=(15*Io.^2)/pi*((cos((pi/2)*cos(theta))./sin(theta))).^2;                  %Intensidad de radiación utilizada para Graficar.
+    D1=4*pi*abs(U1)/Prad ;                                                       %Directividad utilizada para Graficar.
+    polar(theta, D1,'g')
+    view(-270,-90)
+    title('Directividad')
+    %%  
+%                                                    Graficas - Campo Electrico - Campo Magnetico                     
+%                                                          Expresadas en forma Rectangular
+    figure(m+2);
+    subplot(2,2,1:2)
+    plot(theta,abs(E1),'b')
+    grid;
+    title('Campo Electrico')
+    xlabel('0:2*pi')
+    ylabel('Campo Electrico V/M')
+    subplot(2,2,3:4)
+    plot(theta,abs(H1),'r')
+    grid;
+    title('Campo Magnetico')
+    xlabel('0:2*pi')
+    ylabel('Campo Magnetico A/M')
+    %%
+    %                                                       Grafica 3D Patron de radiacion 
+    
+    [FI,THETA]=meshgrid(fi,theta);
+
+    %                                                        creacion del Patron de Radiacion.
+                                                                   
+    %U2=(15*Io.^2)/pi*((cos((pi/2)*cos(THETA))./sin(THETA))).^2;                     %Intensidad de radiación utilizada para Graficar.
+    E2=abs(60*1j*Io*exp(-1j*k*r)*(1/r)*(cos((pi/2)*cos(THETA))./sin(THETA)))
+    
+    %                   cambio de coordenadas esfericas a rectangulares que son las que se usan para graficas en %3D en matlab. 
+
+    X=abs(E2).*sin(THETA).*cos(FI);
+    Y=abs(E2).*sin(THETA).*sin(FI);
+    Z=abs(E2).*cos(THETA);
+    figure(m+3); 
+    R=surface(X,Y,Z,E2);
+    meshc(X,Y,Z,E2);
+    grid;
+    axis equal
+    lighting gouraud
+    shading interp
+    view(0,40)
+    title('Intensidad de radiacion')
+    %%
+                                                             %Vistas del Patron de Radiacion                                                                                                                                                                                                                                    
+phi=linspace(0,2*pi);
+tetha=linspace(0,pi);
+[t,p]=meshgrid(tetha,phi);
+E3=abs(60*1j*Io*exp(-1j*k*r)*(1/r)*(cos((pi/2)*cos(t))./sin(t)));
+%e=abs((60*1j*Io)*exp(-1j*k*r)*(1/r).*(cos((pi/2).*cos(t))./sin(t))); 
+%U3=abs((15*Io.^2)/pi*((cos((pi/2)*cos(t))./sin(t))).^2);
+x=E3.*sin(t).*cos(p);
+y=E3.*sin(t).*sin(p);
+z=E3.*cos(t);
+figure(m+4)
+polar(p,E3)                                                                 %   Patrón de Radiación en proporcion a la Dirección del campo
+title('Patrón de Radiación en proporción a la Dirección del campo')
+figure(m+5)
+plot(x,y)                                                                   %   Patrón de radiación en los planos X,Y
+title('Patrón de radiación en los planos X,Y')
+figure(m+6)
+plot(y,z)                                                                   %   Patrón de radiación en los planos Y,Z
+title('Patrón de radiación en los planos Y,Z')
+%%
+ %                                                        Apertura Rectangular Referencia Ulaby 
+    y=lx*sin(theta);
+    f=(sinc(pi*y)).^2;
+    %subplot(2,3,4)
+    figure(m+7);
+    plot(y,f)
+    %polar(y,f)
+    xlim([-5,5]);
+    ylim([-0.002,1.1]);
+    grid;
+    xlabel('longitud de onda en la apertura rectangular X');
+    ylabel('Patron de radiacion S(R,theta)/Smax');
+    title('Patron de apertura rectangular Ulaby');
+
+ %%
+%                                                    Apertura Rectangular 3D Referencia PDF Orfanidis
+    [theta,phi] = meshgrid(0:1:90, 0:9:360);
+    theta = theta*pi/180; phi = phi*pi/180;
+    vx = lx*sin(theta).*cos(phi);
+    vy = ly*sin(theta).*sin(phi);
+    Fo= abs((1 + cos(theta))/2 .* sinc(vx) .* sinc(vy));
+    %subplot(2,3,5)
+    figure(m+8); 
+    surface(vx,vy,Fo);
+    %meshc(vx,vy,Fo);
+    axis equal
+    grid;
+    xlabel('longitud de onda en la apertura rectangular X');
+    ylabel('longitud de onda en la apertura rectangular Y');
+    zlabel('Patron de radiacion E(theta,phi)/Emax');
+    title('Pattern of rectangular aperture');
+    colormap jet
+    shading flat
+    %end
+    %surf(X,Y,Z)
+    %title('grafica mesh'),xlabel('eje x'),ylabel('eje y'),zlabel('eje z')
+
+
+##### SOURCE END #####
+--></body></html>
